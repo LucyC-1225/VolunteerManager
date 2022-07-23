@@ -1,4 +1,4 @@
-# By Lucy Chen and Sheldon Jian
+# Bayview Hackathon - By Lucy Chen and Sheldon Jian
 ## Inspiration
 We were inspired by how difficult it was to organize volunteer data (name, email, role, and hours) for both the admin and the volunteer.
 ## What it does
