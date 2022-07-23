@@ -78,6 +78,7 @@ public class GUI {
         frame.add(homePanel);
         frame.setResizable(false);
         frame.setVisible(true);
+        //test
     }
     //Action Listener
     public void actionPerformed(ActionEvent e) {
