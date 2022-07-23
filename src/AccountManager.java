@@ -9,10 +9,13 @@ public class AccountManager {
     private JButton login;
     private JButton signup;
     private User user;
+    private VolunteerUser volunteerUser;
     private static ArrayList<User> allUsers;
+    private static ArrayList<VolunteerUser> allVolunteerUsers;
 
     public AccountManager() {
         allUsers = new ArrayList<User>();
+        allVolunteerUsers = new ArrayList<VolunteerUser>();
         frame = new JFrame("Login Frame");
         frame.setSize(400,500);
         panel = new JPanel();
@@ -36,6 +39,7 @@ public class AccountManager {
         frame.setResizable(false);
         frame.setVisible(true);
         GUI.retrieve();
+        VolunteerManagement.retrieve();
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -46,8 +50,13 @@ public class AccountManager {
             if (usernameExist(username)) {
                 JOptionPane.showMessageDialog(frame, "USERNAME ALREADY EXISTS. PLEASE LOGIN");
             } else if (username != null && password != null) {
-                user = new User(username, password);
-                allUsers.add(user);
+                if (username.indexOf("admin") != -1) {
+                    user = new User(username, password);
+                    allUsers.add(user);
+                } else {
+                    volunteerUser = new VolunteerUser(username, password);
+                    allVolunteerUsers.add(volunteerUser);
+                }
             }
         }
         if (source == login) {
@@ -55,25 +64,48 @@ public class AccountManager {
                 String username = JOptionPane.showInputDialog(frame, "Enter your username");
                 String password = JOptionPane.showInputDialog(frame, "Enter your password");
                 if (usernameExist(username)) {
-                    if (getUserByUsername(username).getPassword().equals(password)) {
-                        user = getUserByUsername(username);
-                        break;
+                    if (!usernameExistVolunteer(username)) {
+                        if (getUserByUsername(username).getPassword().equals(password)) {
+                            user = getUserByUsername(username);
+                            break;
+                        } else {
+                            JOptionPane.showMessageDialog(frame, "WRONG USERNAME/PASSWORD");
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(frame, "WRONG USERNAME/PASSWORD");
+                        if (getVolunteerUserByUsername(username).getPassword().equals(password)) {
+                            volunteerUser = getVolunteerUserByUsername(username);
+                            break;
+                        } else {
+                            JOptionPane.showMessageDialog(frame, "WRONG USERNAME/PASSWORD");
+                        }
                     }
                 } else {
                     JOptionPane.showMessageDialog(frame, "USERNAME DOES NOT EXIST. PLEASE SIGN UP FIRST");
                     break;
                 }
             }
-            GUI start = new GUI(user);
-            frame.setVisible(false);
-            start.initialize();
+            if (user != null) {
+                GUI start = new GUI(user);
+                frame.setVisible(false);
+                start.initialize();
+            } else {
+                VolunteerManagement start = new VolunteerManagement(volunteerUser);
+                frame.setVisible(false);
+                start.initialize();
+            }
         }
     }
     public boolean usernameExist(String username) {
         for (int i = 0; i < allUsers.size(); i++) {
-            if (username.equals(allUsers.get(i).getUsername())) {
+            if (username.equals(allUsers.get(i).getUsername()) || usernameExistVolunteer(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean usernameExistVolunteer(String username) {
+        for (int i = 0; i < allVolunteerUsers.size(); i++) {
+            if (username.equals(allVolunteerUsers.get(i).getUsername())) {
                 return true;
             }
         }
@@ -87,7 +119,19 @@ public class AccountManager {
         }
         return null;
     }
+    public VolunteerUser getVolunteerUserByUsername(String username) {
+        for (int i = 0; i < allVolunteerUsers.size(); i++) {
+            if (username.equals(allVolunteerUsers.get(i).getUsername())) {
+                return allVolunteerUsers.get(i);
+            }
+        }
+        return null;
+    }
     public static ArrayList<User> getAllUsers() {
         return allUsers;
+    }
+
+    public static ArrayList<VolunteerUser> getAllVolunteerUsers() {
+        return allVolunteerUsers;
     }
 }

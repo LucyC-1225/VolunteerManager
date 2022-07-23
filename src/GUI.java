@@ -168,13 +168,15 @@ public class GUI {
     public void save() {
         FileOutputStream f = null;
         try {
-            f = new FileOutputStream("src/allUsernames.txt");
+            f = new FileOutputStream("src/allUsernames.txt", true);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         for (int i = 0; i < AccountManager.getAllUsers().size(); i++){
             String name = AccountManager.getAllUsers().get(i).getUsername() + "\n";
             try {
+                String str = "";
+                f.write(str.getBytes());
                 f.write(name.getBytes());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -189,11 +191,13 @@ public class GUI {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        //retrieves all usernames ever created
+        //retrieves all admin usernames ever created
         ArrayList<String> usernames = new ArrayList<String>();
         while (sc.hasNextLine()){
             String str = sc.nextLine();
-            usernames.add(str);
+            if (str.indexOf("admin") != -1) {
+                usernames.add(str);
+            }
         }
         //for every username, there is an account
         for (int i = 0; i < usernames.size(); i++) {
