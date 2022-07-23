@@ -61,21 +61,16 @@ public class GUI {
         homePanel.add(showVolunteerDetail, c);
 
         c.gridy = 3;
-        sendHourVerificationEmail = new JButton("Send Verification Email");
-        sendHourVerificationEmail.addActionListener(this::actionPerformed);
-        homePanel.add( sendHourVerificationEmail, c);
-
-        c.gridy = 4;
         editVolunteerDetail = new JButton("Edit Volunteer Details");
         editVolunteerDetail.addActionListener(this::actionPerformed);
         homePanel.add(editVolunteerDetail, c);
 
-        c.gridy = 5;
+        c.gridy = 4;
         removeVolunteer = new JButton("Remove Volunteer");
         removeVolunteer.addActionListener(this::actionPerformed);
         homePanel.add(removeVolunteer, c);
 
-        c.gridy = 6;
+        c.gridy = 5;
         saveAndLogOut = new JButton("Save and Logout");
         saveAndLogOut.addActionListener(this::actionPerformed);
         homePanel.add(saveAndLogOut, c);
@@ -101,9 +96,6 @@ public class GUI {
         if (source == showVolunteerDetail) {
             int index = volunteerList.getSelectedIndex();
             JOptionPane.showMessageDialog(frame, user.getVolunteers().get(index).getDetails());
-        }
-        if (source == sendHourVerificationEmail) {
-            //NEED TO BE COMPLETED
         }
         if (source == editVolunteerDetail) {
             int index = volunteerList.getSelectedIndex();
